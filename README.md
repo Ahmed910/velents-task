@@ -49,9 +49,18 @@ This project integrates with MyFatoorah for payment processing. Please note that
     sudo chown www-data:www-data -R ./storage 
 
 7. **Stripe CLI Configuration For Listening Webhook Locally:**
-    - first plz uncomment stripe integration in place order function in order service, then follow this instructions to set up stripe cli using apt pkg manager
-    1- curl -s https://packages.stripe.dev/api/security/keypair/stripe-cli-gpg/public | gpg --dearmor | sudo tee /usr/share/keyrings/stripe.gpg
-    2- echo "deb [signed-by=/usr/share/keyrings/stripe.gpg] https://packages.stripe.dev/stripe-cli-debian-local stable main" | sudo tee -a /etc/apt/sources.list.d/stripe.list
-    3- sudo apt update
-    4- sudo apt install stripe
-    5- stripe login --api-key whsec_c3be9f9300d19e83e85d66ebe71faae65834273bbe5de6ac6b6f2495fb214024         
+    first plz uncomment stripe integration in place order function in order service, then follow this instructions to set up stripe cli using apt pkg manager
+   # Add the GPG key for the Stripe CLI
+curl -s https://packages.stripe.dev/api/security/keypair/stripe-cli-gpg/public | gpg --dearmor | sudo tee /usr/share/keyrings/stripe.gpg
+
+# Add the Stripe CLI repository to your sources list
+echo "deb [signed-by=/usr/share/keyrings/stripe.gpg] https://packages.stripe.dev/stripe-cli-debian-local stable main" | sudo tee -a /etc/apt/sources.list.d/stripe.list
+
+# Update the package list
+sudo apt update
+
+# Install the Stripe CLI
+sudo apt install stripe
+
+# Log in to Stripe using your API key
+stripe login --api-key whsec_c3be9f9300d19e83e85d66ebe71faae65834273bbe5de6ac6b6f2495fb214024        
