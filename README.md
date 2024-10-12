@@ -54,18 +54,18 @@ This project integrates with MyFatoorah for payment processing. Please note that
    ```bash
    curl -s https://packages.stripe.dev/api/security/keypair/stripe-cli-gpg/public | gpg --dearmor | sudo tee /usr/share/keyrings/stripe.gpg
 
-   - Add the Stripe CLI repository to your sources list
+- Add the Stripe CLI repository to your sources list
    ```bash
    echo "deb [signed-by=/usr/share/keyrings/stripe.gpg] https://packages.stripe.dev/stripe-cli-debian-local stable main" | sudo tee -a /etc/apt/sources.list.d/stripe.list
 
-   - Update the package list
+- Update the package list
    ```bash
    sudo apt update
 
-   - Install the Stripe CLI
+- Install the Stripe CLI
    ```bash
    sudo apt install stripe
 
-   - Log in to Stripe using your API key
+- Log in to Stripe using your API key
    ```bash
    stripe login --api-key whsec_c3be9f9300d19e83e85d66ebe71faae65834273bbe5de6ac6b6f2495fb214024        
