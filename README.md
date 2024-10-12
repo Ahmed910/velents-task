@@ -28,7 +28,7 @@ To set up the application using Docker, please follow these steps:
     http://localhost:8000/api
 
 ## Payment Integration Note
-This project integrates with MyFatoorah for payment processing. Please note that the webhook functionality requires valid account credentials. An alternative integration with Stripe has been established, but the code for utilizing the Stripe iframe is currently commented out.
+This project integrates with MyFatoorah for payment processing. Please note that the webhook functionality requires valid account credentials. An alternative integration with Stripe has been established, but the code for utilizing the Stripe is currently commented out.
 
 ## Features Implemented
    - Admin Login Functionality: Admin login functionality has been added in UserSeeder.
