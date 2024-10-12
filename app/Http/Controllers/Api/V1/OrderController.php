@@ -99,12 +99,16 @@ class OrderController extends Controller
 
     public function callback(Request $request)
     {
-        dd('success: '. $request);
+        // Prepare the success message
+        $message = 'Payment Transaction is processed successfully';
+
+        // Return the success view with the success message
+        return view('success')->with('message', $message);
     }
 
     public function error(Request $request)
     {
-        dd('errors: ' . $request);
+        return view('error')->with('message', 'Payment Transaction is not processed successfully');
     }
 
     // Here Using WebHook For Stripe Integration
@@ -117,16 +121,15 @@ class OrderController extends Controller
         $endpointSecret = env('STRIPE_WEBHOOK_SECRET'); // Set this in your .env
 
         try {
-             $this->orderInterface->handleWebhook($payload, $sigHeader, $endpointSecret);
+            $this->orderInterface->handleWebhook($payload, $sigHeader, $endpointSecret);
 
-             $resp = new ServiceResponse('order paid successfully', true, null);
+            $resp = new ServiceResponse('order paid successfully', true, null);
 
-             return response()->json($resp->getRepr(), JsonResponse::HTTP_OK);
+            return response()->json($resp->getRepr(), JsonResponse::HTTP_OK);
         } catch (\UnexpectedValueException $e) {
             // Invalid payload
             $resp = new ServiceResponse('Invalid payload', false, null);
             return response()->json($resp->getRepr(), JsonResponse::HTTP_BAD_REQUEST);
-
         } catch (\Stripe\Exception\SignatureVerificationException $e) {
             // Invalid signature
             $resp = new ServiceResponse('Invalid signature', false, null);
