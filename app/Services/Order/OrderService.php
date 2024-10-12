@@ -51,24 +51,26 @@ class OrderService implements OrderInterface
             $order = Order::where(['status' => OrderStatus::PENDING->value, 'id' => $id])->firstOrFail();
             $user = auth()->user();
 
-          //  MyFatoorah Integration
-               /** @var Transaction $transaction */
-                $transaction = $order->transactions()->create([
-                    'amount' => $order->total_amount,
-                    'customer_name' => $user->name,
-                    'notification_option' => NotificationOption::LNK->value,
-                    'created_by' => $user->id
-                ]);
+            //  MyFatoorah Integration
+            /** @var Transaction $transaction */
+            $transaction = $order->transactions()->create([
+                'amount' => $order->total_amount,
+                'order_quantity' => $order->quantity,
+                'order_price_per_unit' => $order->price,
+                'customer_name' => $user->name,
+                'notification_option' => NotificationOption::LNK->value,
+                'created_by' => $user->id
+            ]);
 
-                $requestData = (new InvoiceRequest($order->total_amount, $user->name, NotificationOption::LNK->value, route('order.callback'), route('order.error')))->getRequestData();
+            $requestData = (new InvoiceRequest($order->total_amount, $user->name, NotificationOption::LNK->value, route('order.callback'), route('order.error')))->getRequestData();
 
-                $transaction = (new Context(new MyFatoorahGateway(
-                    'v2/SendPayment',
-                    env('FATOORAH_API_KEY'),
-                    'application/json',
-                    env('FATOORAH_BASE_URL'),
-                    $requestData
-                )))->placeOrder($order, $transaction);
+            $transaction = (new Context(new MyFatoorahGateway(
+                'v2/SendPayment',
+                env('FATOORAH_API_KEY'),
+                'application/json',
+                env('FATOORAH_BASE_URL'),
+                $requestData
+            )))->placeOrder($order, $transaction);
 
             // Stripe Integration
 
@@ -88,6 +90,8 @@ class OrderService implements OrderInterface
 
             // $transaction = $order->transactions()->create([
             //     'amount' => $order->total_amount,
+                // 'order_quantity' => $order->quantity,
+                // 'order_price_per_unit' => $order->price,
             //     'customer_name' => $user->name,
             //     'notification_option' => NotificationOption::LNK->value,
             //     'created_by' => $user->id
